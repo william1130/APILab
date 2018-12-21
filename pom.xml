@@ -41,9 +41,9 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+ 		<dependency>
+ 			<groupId>org.springframework.boot</groupId>
+ 			<artifactId>spring-boot-starter-web</artifactId>
 			<!-- 去除内嵌tomcat -->
 <!-- 			<exclusions> -->
 <!-- 				<exclusion> -->
@@ -51,7 +51,7 @@
 <!-- 					<artifactId>spring-boot-starter-tomcat</artifactId> -->
 <!-- 				</exclusion> -->
 <!-- 			</exclusions> -->
-		</dependency>
+ 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
@@ -95,12 +95,6 @@
 			<groupId>tk.mybatis</groupId>
 			<artifactId>mapper-spring-boot-starter</artifactId>
 			<version>1.2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
 		</dependency>
 		
 		<!--工具-->
