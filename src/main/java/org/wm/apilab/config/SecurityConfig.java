@@ -25,16 +25,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 // 認證請求
                 .authorizeRequests()
-                // "/"所有請求都放行
-                .antMatchers("/").permitAll()
                 // "/login" 的POST請求 都放行
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 // 權限檢測
-                .antMatchers("/hello").hasAuthority("AUTH_WRITE")
+//                .antMatchers("/*/hello/*").hasAuthority("AUTH_WRITE")
                 // 角色檢測
-                .antMatchers("/world").hasRole("ADMIN")
+                .antMatchers("/userApi/register").permitAll()
+                .antMatchers("/userApi/*").hasRole("ADMIN")
+                .antMatchers("/userApi/hello/*").hasRole("GroupA")
                 // 所有請求需要身份認證
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
+                // "/"所有請求都放行
+              .antMatchers("/*").permitAll()
             .and()
                 // 新增Filter "/login" 的請求透過 JWTLoginFilter 處理
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),

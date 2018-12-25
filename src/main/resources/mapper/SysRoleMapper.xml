@@ -38,4 +38,9 @@
     select ID, `NAME`, `ROLE`, DESCRIPTION, `STATUS`
     from SYS_ROLE
   </select>
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	select * from `SYS_ROLE`as r
+	left join `SYS_USER_ROLE`as ur on r.`ID` = ur.`ROLE_ID`
+	where ur.USER_ID = #{id,jdbcType=BIGINT}
+  </select>
 </mapper>

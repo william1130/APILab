@@ -6,9 +6,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wm.apilab.dao.SysRoleMapper;
 import org.wm.apilab.dao.SysUserMapper;
 import org.wm.apilab.dao.TokenMapper;
 import org.wm.apilab.model.ErrorResult;
+import org.wm.apilab.model.SysRole;
 import org.wm.apilab.model.SysUser;
 import org.wm.apilab.model.Token;
 import org.wm.apilab.service.UserService;
@@ -20,6 +22,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysRoleMapper sysRoleMapper;
     @Autowired
     private TokenMapper tokenMapper;
     @Autowired
@@ -73,6 +77,11 @@ public class UserServiceImpl implements UserService {
     public boolean checkToken(Token token) {
         return token.getToken()
                 .equals(tokenMapper.selectByPrimaryKey(token.getUserId()).getToken());
+    }
+
+    @Override
+    public SysRole selectByUserId(int userId) {
+        return sysRoleMapper.selectByPrimaryKey((long) userId);
     }
 
 }

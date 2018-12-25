@@ -2,12 +2,15 @@ package org.wm.apilab.filter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.wm.apilab.utils.JSONUtils;
 
 @Component
 public class TimeInterceptor extends HandlerInterceptorAdapter {
@@ -30,6 +33,14 @@ public class TimeInterceptor extends HandlerInterceptorAdapter {
             String parameterName = methodParameter.getParameterName();
             // 只能取得慘數名，取不到慘數值
             // System.out.println("parameterName: " + parameterName);
+        }
+        
+        if (handlerMethod.getMethod().getName().equals("error")) {
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getOutputStream().println(JSONUtils.fillResultString(500, "Internal Server Error!!!", JSONObject.NULL));
+
+            throw new Exception();
         }
 
         // 寫入系統時間 threadLocal

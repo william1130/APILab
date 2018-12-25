@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.wm.apilab.annotation.Authorization;
 import org.wm.apilab.model.SysUser;
 import org.wm.apilab.service.UserService;
+import org.wm.apilab.utils.JSONUtils;
 
 @RestController
 @RequestMapping({"/userApi","/home/userApi"})
@@ -37,9 +38,10 @@ public class UserApiController {
     @ResponseBody
     public ResponseEntity getUser(@PathVariable int id) {
         return userService.getUser(id);
+//        reutrn JSONUtils.fillResultString(id, null, id);
     }
     
-    @RequestMapping(value = "/hi/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/hello/{name}", method = RequestMethod.GET)
     public String sayWorld(@PathVariable("name") String name) {
         return "Hello " + name;
     }

@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.wm.apilab.dao.SysUserMapper;
+import org.wm.apilab.model.SysRole;
 import org.wm.apilab.model.SysUser;
 import org.wm.apilab.service.UserService;
 
@@ -18,8 +18,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private SysUserMapper sysUserMapper;
     
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -28,18 +26,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         SysUser user = userService.findByName(name);
-        sysUserMapper.findByName(name);
+        SysRole role = userService.selectByUserId(Math.toIntExact(user.getId()));
         
-        if (user == null) 
-            throw new BadCredentialsException("無此用戶!");
+        if (user == null) throw new BadCredentialsException("無此用戶!");
         
         // 登入驗證
         if (name.equals(user.getUsername()) && password.equals(user.getPassword())) {
 
             // 設定權限、角色
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN") );
-            authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
+            if (role != null)
+                authorities.add( new GrantedAuthorityImpl(role.getRole()) );
+            
             // 回傳token
             Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);
             return auth;

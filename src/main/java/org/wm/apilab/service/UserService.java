@@ -1,6 +1,7 @@
 package org.wm.apilab.service;
 
 import org.springframework.http.ResponseEntity;
+import org.wm.apilab.model.SysRole;
 import org.wm.apilab.model.SysUser;
 import org.wm.apilab.model.Token;
 
@@ -14,4 +15,6 @@ public interface UserService {
     boolean checkToken(Token token);
     
     SysUser findByName(String username);
+    
+    SysRole selectByUserId(int userId);
 }
