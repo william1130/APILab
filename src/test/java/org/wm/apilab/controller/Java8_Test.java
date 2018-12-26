@@ -24,7 +24,8 @@ public class Java8_Test {
 
     @Test
     public void test() {
-
+        // TODO CompletableFuture & Optional
+        // 非同步處理
         List<String> userList = getUserList();
 
         StringBuilder result = new StringBuilder();

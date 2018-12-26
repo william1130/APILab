@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/*/hello/*").hasAuthority("AUTH_WRITE")
                 // 角色檢測
                 .antMatchers("/userApi/register").permitAll()
-                .antMatchers("/userApi/*").hasRole("ADMIN")
+                .antMatchers("/userApi/getUserbyId/*").hasRole("ADMIN")
                 .antMatchers("/userApi/hello/*").hasRole("GroupA")
                 // 所有請求需要身份認證
 //                .anyRequest().authenticated()

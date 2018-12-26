@@ -16,5 +16,5 @@ public interface SysRoleMapper {
 
     int updateByPrimaryKey(SysRole record);
     
-    SysRole selectByUserId(Long userId);
+    List<SysRole> selectByUserId(Long userId);
 }

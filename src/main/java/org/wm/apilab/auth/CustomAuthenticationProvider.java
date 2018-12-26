@@ -1,6 +1,7 @@
 package org.wm.apilab.auth;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,7 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         SysUser user = userService.findByName(name);
-        SysRole role = userService.selectByUserId(Math.toIntExact(user.getId()));
+        List<SysRole> roleList = userService.selectByUserId(Math.toIntExact(user.getId()));
         
         if (user == null) throw new BadCredentialsException("無此用戶!");
         
@@ -35,8 +36,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
             // 設定權限、角色
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-            if (role != null)
-                authorities.add( new GrantedAuthorityImpl(role.getRole()) );
+            if (roleList != null)
+                roleList.forEach(role -> authorities.add( new GrantedAuthorityImpl(role.getRole()) ));
             
             // 回傳token
             Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);

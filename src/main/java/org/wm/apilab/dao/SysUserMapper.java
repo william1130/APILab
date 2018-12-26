@@ -2,7 +2,6 @@ package org.wm.apilab.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.context.annotation.Bean;
 import org.wm.apilab.model.SysUser;
 
 @Mapper

@@ -1,5 +1,6 @@
 package org.wm.apilab.service.impl;
 
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,7 +15,6 @@ import org.wm.apilab.model.SysRole;
 import org.wm.apilab.model.SysUser;
 import org.wm.apilab.model.Token;
 import org.wm.apilab.service.UserService;
-import org.wm.apilab.utils.Md5Utils;
 
 @Service
 @SuppressWarnings("rawtypes")
@@ -31,8 +31,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity getUser(int id) {
-        SysUser user = sysUserMapper.selectByPrimaryKey((long) id);
-        redisTemplate.opsForValue().set(String.valueOf(id), user);
+        System.out.println("check redisTemplate name:"+id);
+        SysUser user = (SysUser) redisTemplate.opsForValue().get(id);
+        if (user == null) {
+            System.out.println("redisTemplate is null...");
+            user = sysUserMapper.selectByPrimaryKey((long) id);
+            // TODO Redis save user object
+            redisTemplate.opsForValue().set(id, user);
+            System.out.println("set redisTemplate name:"+id);
+        }
         if (user != null) {
             return ResponseEntity.status(200).body(user);
         }
@@ -49,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ResponseEntity register(SysUser user) {
-        String password = Md5Utils.EncoderByMd5(user.getPassword());
+//        String password = Md5Utils.EncoderByMd5(user.getPassword());
 //        user.setPassword(password);
         ResponseEntity entry;
         if (findByName(user.getUsername()) != null) {
@@ -64,7 +71,7 @@ public class UserServiceImpl implements UserService {
             token.setUserId((long) user.getId());
             tokenMapper.insert(token);
             Token result = tokenMapper.selectByPrimaryKey(user.getId());
-            if (user.getStatus() == 9) { //rollback test
+            if (user.getStatus() == 9) { //TODO rollback test
                 String a = null;
                 a.indexOf('c');
             }
@@ -80,8 +87,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SysRole selectByUserId(int userId) {
-        return sysRoleMapper.selectByPrimaryKey((long) userId);
+    public List<SysRole> selectByUserId(int userId) {
+        return sysRoleMapper.selectByUserId((long) userId);
     }
 
 }

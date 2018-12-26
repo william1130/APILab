@@ -1,5 +1,6 @@
 package org.wm.apilab.service;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.wm.apilab.model.SysRole;
 import org.wm.apilab.model.SysUser;
@@ -16,5 +17,5 @@ public interface UserService {
     
     SysUser findByName(String username);
     
-    SysRole selectByUserId(int userId);
+    List<SysRole> selectByUserId(int userId);
 }

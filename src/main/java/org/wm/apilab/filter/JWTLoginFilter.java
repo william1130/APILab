@@ -55,5 +55,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getOutputStream().println(JSONUtils.fillResultString(500, "Internal Server Error!!!", JSONObject.NULL));
+        
     }
 }

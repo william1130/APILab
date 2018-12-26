@@ -25,7 +25,8 @@ public class TokenAuthenticationService {
     public static void addAuthentication(HttpServletResponse response, String username,
             Collection<? extends GrantedAuthority> collectionList) {
 
-        // TODO stream
+        // TODO stream & Lambda
+        collectionList.forEach(c -> System.out.println(c.getAuthority()));
         String collection =
                 collectionList.stream().map(c -> c.getAuthority()).collect(Collectors.joining(","));
 
@@ -42,7 +43,7 @@ public class TokenAuthenticationService {
         try {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getOutputStream().println(JSONUtils.fillResultString(0, "登入成功!", JWT));
+            response.getOutputStream().println(JSONUtils.fillResultString(0, "", JWT));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,7 +63,8 @@ public class TokenAuthenticationService {
 
             // 拿用户名
             String user = claims.getSubject();
-
+            request.setAttribute("userName", user);
+            
             // 得到 權限（角色）
             List<GrantedAuthority> authorities = AuthorityUtils
                     .commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
