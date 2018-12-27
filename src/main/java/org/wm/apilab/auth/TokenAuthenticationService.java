@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.wm.apilab.utils.Const;
 import org.wm.apilab.utils.JSONUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -41,9 +42,9 @@ public class TokenAuthenticationService {
 
         // 將 JWT 寫入 body
         try {
-            response.setContentType("application/json");
+            response.setContentType("application/json; charset=UTF-8");
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getOutputStream().println(JSONUtils.fillResultString(0, "", JWT));
+            response.getWriter().println(JSONUtils.fillResultString(Const.RC_000, JWT));
         } catch (IOException e) {
             e.printStackTrace();
         }

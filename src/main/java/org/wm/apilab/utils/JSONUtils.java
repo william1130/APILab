@@ -3,7 +3,8 @@ package org.wm.apilab.utils;
 import org.json.JSONObject;
 
 public class JSONUtils {
-    public static String fillResultString(Integer status, String message, Object result) {
+
+    public static String resultString(String status, String message, Object result) {
         JSONObject jsonObject = new JSONObject() {
             {
                 put("status", status);
@@ -14,4 +15,9 @@ public class JSONUtils {
 
         return jsonObject.toString();
     }
+
+    public static String fillResultString(String code, Object result) {
+        return resultString(code, Const.RESULT_MAP.get(code), result);
+    }
+    
 }

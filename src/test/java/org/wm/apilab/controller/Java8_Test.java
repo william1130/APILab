@@ -32,15 +32,16 @@ public class Java8_Test {
         List<CompletableFuture> futures =
                 userList.stream()
                         .map(user -> CompletableFuture.completedFuture(user)
-                                .thenApplyAsync(s -> delayedUpperCase(s)))
+                                .thenApply(s -> delayedUpperCase(s)))
                         .collect(Collectors.toList());
-        CompletableFuture allOf =
+        CompletableFuture anyOf =
                 CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]))
                         .whenComplete((v, th) -> {
                             futures.forEach(cf -> System.out.println(cf.getNow(null)));
                             result.append("done");
                         });
-        allOf.join();
+        anyOf.join();
+                    
         assertTrue("Result was empty", result.length() > 0);
     }
 
@@ -48,7 +49,7 @@ public class Java8_Test {
         List<String> userName = new ArrayList<String>();
         List<SysUser> sysUser = sysUserMapper.selectAll();
         sysUser.forEach(
-                user -> userName.add(Optional.ofNullable(user.getUsername()).orElse("null")));
+                user -> userName.add(Optional.ofNullable(user.getRemark()).orElse("isempty")));
         return userName;
     }
 

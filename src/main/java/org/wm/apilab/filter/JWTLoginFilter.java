@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.wm.apilab.auth.TokenAuthenticationService;
 import org.wm.apilab.model.SysUser;
+import org.wm.apilab.utils.Const;
 import org.wm.apilab.utils.JSONUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,9 +53,9 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setContentType("application/json");
+        response.setContentType("application/json; charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getOutputStream().println(JSONUtils.fillResultString(500, "Internal Server Error!!!", JSONObject.NULL));
+        response.getWriter().println(JSONUtils.fillResultString(Const.RC_912, JSONObject.NULL));
         
     }
 }

@@ -36,14 +36,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 所有請求需要身份認證
 //                .anyRequest().authenticated()
                 // "/"所有請求都放行
-              .antMatchers("/*").permitAll()
+                .antMatchers("/*").permitAll()
             .and()
                 // 新增Filter "/login" 的請求透過 JWTLoginFilter 處理
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
                 // 新增Filter驗證其他請求的Token是否合法
                 .addFilterBefore(new JWTAuthenticationFilter(),
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
+                 .exceptionHandling()
+                 .accessDeniedPage("/403");
     }
 
     @Override
